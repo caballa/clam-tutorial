@@ -20,25 +20,26 @@ extern int int_nd(void);
     }						\
   }
 
-typedef int SIZET;
+typedef int SIZE;
 
 typedef struct node{
   int    *data;
-  SIZET len;
-  SIZET cap;
+  SIZE len;
+  SIZE cap;
   struct node *n;
 } *List;
 
 
 #define N 10000
+#define M 1024
 
-void* malloc_not_fail(SIZET sz) {
+void* malloc_not_fail(SIZE sz) {
   void* p = malloc(sz);
   __CRAB_assume(p > 0);
   return p;
 }
 
-int* mycalloc(SIZET sz) {
+int* mycalloc(SIZE sz) {
   int* data = (int*) malloc_not_fail(sizeof(int) * sz);
   int i;
   for (i=0;i<sz;++i) {
@@ -47,18 +48,15 @@ int* mycalloc(SIZET sz) {
   return data;
 }
 
-List mk_list(int n, SIZET data_sz) {
+List mk_list(int n, SIZE data_sz) {
   List l = 0;
   int i;
   for (i=0; i<n;i++) {
+    List tmp = (List) malloc_not_fail(sizeof(struct node));    
     int* data = mycalloc(data_sz); 
-    List tmp = (List) malloc_not_fail(sizeof(struct node));
     tmp->data= data;
     tmp->cap = data_sz;
     int used = int_nd();
-    // Produce bad CrabIR due to boolean &&.
-    // Better split into two assumes
-    //__CRAB_assume(used >= 0 && used < data_sz);    
     __CRAB_assume(used >= 0);
     __CRAB_assume(used < data_sz);
     tmp->len = used;
@@ -73,25 +71,18 @@ List mk_list(int n, SIZET data_sz) {
 // (3) every node n. n->len <= n->cap
 // (4) every node n. n->data[i] == 0 for all i
 int main() {
-#if 0
+#if 1
   // Constant values
-  SIZET list_sz = N;
-  SIZET data_sz = N;
+  SIZE list_sz = N;
+  SIZE data_sz = M;
 #else
   // Non-deterministic values
   int x = int_nd();
   __CRAB_assume(x > 0);  
-  SIZET list_sz = x;
+  SIZE list_sz = x;
   int y = int_nd();
   __CRAB_assume(y > 0);
-  SIZET data_sz = y;
-
-  // Produces bad CrabIR  due to unsigned integers
-  //size_t list_sz = int_nd();
-  //__CRAB_assume(list_sz > 0);
-  //size_t data_sz = int_nd();
-  //__CRAB_assume(data_sz > 0);
-  
+  SIZE data_sz = y;
 #endif
   
   List node = mk_list(list_sz, data_sz);

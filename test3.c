@@ -11,15 +11,17 @@ extern int int_nd(void);
 extern void __CRAB_assume(int);
 extern void __CRAB_assert(int);
 
-int* init(int sz) {
-  return (int*)malloc(sz*sizeof(int));
+int* alloc(int sz) {
+  int* p = (int*)malloc(sz*sizeof(int));
+  __CRAB_assume(p>0);
+  return p;
 }
 
 int main () {
   int n = int_nd();
   __CRAB_assume(n>0);
 
-  int* a = init(n);
+  int* a = alloc(n);
 
   int i;
   for (i=0;i<n;i++) {
