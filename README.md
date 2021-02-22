@@ -25,8 +25,11 @@ cmake --build . --target install
 Run all programs with `lit`:
 
 ``` 
-lit --param test_dir=. ./
+make all
 ```
+
+The directory `inter` includes some examples using the Crab
+inter-procedural analyses. 
 
 ## Build an analyzer from scratch using C++ Clam API ##
 
@@ -37,12 +40,12 @@ the C++ Clam API. The code of the full analyzer is in
 1. Modify in `api-example/Makefile` the variables `CLAM_INSTALL` and `LLVM_HOME`.
 2. Type `make`.
 
-To try the analyzer, type:
-
 ```
 cd api-example
 ./myanalyzer ./bitcode/test3.ll
 ```
 
 The directory `api-example/bitcode` has several bitcode samples that you can analyze.
+
+
 
