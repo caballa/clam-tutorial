@@ -1,10 +1,8 @@
-// RUN: %clam -O0 --crab-bu-inter --crab-dom=zones --crab-check=assert "%s" 2>&1 | OutputCheck %s
 // RUN: %clam -O0 --crab-inter --crab-dom=zones --crab-check=assert "%s" 2>&1 | OutputCheck %s
 // CHECK: ^3  Number of total safe checks$
 
 /* 
- * Basic example to show summaries computed by bottom-up and top-down
- * analyses.
+ * Basic example with zones.
 */
 
 extern int int_nd(void);

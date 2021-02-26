@@ -1,10 +1,8 @@
-// RUN: %clam  --crab-bu-inter --crab-dom=pk --crab-check=assert "%s" 2>&1 | OutputCheck %s
 // RUN: %clam  --crab-inter --crab-dom=pk --crab-check=assert "%s" 2>&1 | OutputCheck %s
 // CHECK: ^3  Number of total safe checks$
 
 /* 
- * More complex example that needs convex polyhedra both for bottom-up
- * and top-down.
+ * More complex example that needs convex polyhedra.
 */
 
 extern int int_nd(void);

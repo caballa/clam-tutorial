@@ -20,16 +20,13 @@ cmake --build . --target apron && cmake ..
 cmake --build . --target install 
 ```
 
-## Programs ##
+## Run programs ##
 
 Run all programs with `lit`:
 
 ``` 
 make all
 ```
-
-The directory `inter` includes some examples using the Crab
-inter-procedural analyses. 
 
 ## Build an analyzer from scratch using C++ Clam API ##
 

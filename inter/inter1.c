@@ -2,8 +2,8 @@
 // CHECK: ^3  Number of total safe checks$
 
 /* 
- * Example where bottom-up analysis with *intervals* fails to prove
- * the assertions but top-down can still prove them.
+ * Example where top-down interprocedural analysis with intervals is
+ * enough.
 */
 
 extern int int_nd(void);
@@ -28,10 +28,12 @@ int f2(int x, int y) {
 }
 
 int main() {
-  int x = int_nd();
-  __CRAB_assume(x == 0);
-  int y = int_nd();
-  __CRAB_assume(y == 0);
+  //int x = int_nd();
+  //__CRAB_assume(x == 0);
+  int x = 0;
+  //int y = int_nd();
+  //__CRAB_assume(y == 0);
+  int y = 0;
   
   int z = f2(x, y);
   

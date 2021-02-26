@@ -3,7 +3,6 @@ extern void __CRAB_assume(int);
 extern void __CRAB_assert(int);
 
 // RUN: %clam -O0 --crab-inter --crab-dom=pk --crab-check=assert  --crab-track=sing-mem  "%s" 2>&1 | OutputCheck %s
-// RUN: %clam -O0 --crab-bu-inter --crab-dom=pw-pk --crab-check=assert  --crab-track=sing-mem  --crab-singleton-aliases "%s" 2>&1 | OutputCheck %s
 // CHECK: ^2  Number of total safe checks$
 
 /* 
