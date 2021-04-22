@@ -34,7 +34,7 @@ This tutorial also includes a standalone LLVM static analyzer that uses
 the C++ Clam API. The code of the full analyzer is in
 `api-example/myanalyzer.cpp`. To compile the code, follow these two steps: 
 
-1. Modify in `api-example/Makefile` the variables `CLAM_INSTALL` and `LLVM_HOME`.
+1. Modify in `api-example/Makefile` the variables `CLAM_INSTALL_DIR` and `LLVM_HOME`.
 2. Type `make`.
 
 ```
