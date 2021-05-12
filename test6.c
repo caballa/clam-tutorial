@@ -1,5 +1,5 @@
 // RUN: %clam -g -O0 --crab-inter --crab-dom=int --crab-track=mem --crab-heap-analysis=cs-sea-dsa --promote-malloc=false --crab-check=uaf "%s" 2>&1 | OutputCheck %s
-// CHECK: ^ 0  Number of total warning checks$
+// CHECK: ^0  Number of total warning checks$
 
 #include <stdlib.h>
 
