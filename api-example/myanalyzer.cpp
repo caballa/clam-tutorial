@@ -1,5 +1,3 @@
-#include <fstream>
-
 #include "llvm/Analysis/CallGraph.h"
 #include "llvm/Analysis/TargetLibraryInfo.h"
 #include "llvm/Bitcode/BitcodeWriter.h"
@@ -28,9 +26,6 @@ int main(int argc, char *argv[]) {
     return 1;
   }
   
-  std::ifstream source;
-  source.open(argv[1]);
-
   //////////////////////////////////////  
   // Get module from LLVM file
   //////////////////////////////////////  
