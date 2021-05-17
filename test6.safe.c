@@ -13,12 +13,15 @@ struct s {
 };
 
 void del(struct s* p) {
-  *(p->f1) = int_nd();
   free(p->f1);
 }
 
+void* mymalloc(int sz) {
+  return malloc(sz);
+}
+
 void initX(struct s* p) {
-  int *x = (int*) malloc(sizeof(int));
+  int *x = (int*) mymalloc(sizeof(int));
   __CRAB_assume(x > 0);    
   if (int_nd()) {
     *x = 5;
