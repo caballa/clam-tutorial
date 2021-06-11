@@ -85,14 +85,13 @@ int main(int argc, char *argv[]) {
       }
     }
   }
-  llvm::errs() << "===Ranges for each LoadInst===\n";
-  /// Ask for the ranges of each LoadInst
+  llvm::errs() << "===Ranges for each Instruction's definition===\n";
   for (auto &f: *module) {
     for (auto &b: f) {
       for (auto &i: b) {
-	if (isa<LoadInst>(i)) {
+	if (!i.getType()->isVoidTy()) {
 	  auto rangeVal = ga.range(i);
-	  llvm::errs() << "Range for " << i << " = [" << rangeVal.first << "," << rangeVal.second << "]\n";
+	  llvm::errs() << "Range for " << i << " = " << rangeVal << "\n";
 	}
       }
     }
