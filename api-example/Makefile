@@ -9,6 +9,16 @@ GMP_DIR=/opt/homebrew
 # Installation directory for MPFR (needed only by Apron and Elina)
 MPFR_DIR=/opt/homebrew
 
-include Makefile.config
-#include Makefile.external.config
+# whether clam was compiled with flag -DCRAB_USE_ELINA=ON or
+# -DCRAB_USE_APRON=ON
+ELINA_OR_APRON ?= APRON
+
+## Include this file if Clam was built without external libraries
+## (ldd, apron, elina)
+#include Makefile.config
+
+## Include this file if Clam was built with external libraries (ldd,
+## apron, elina).
+include Makefile.external.config
+
 
