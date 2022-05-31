@@ -9,7 +9,7 @@ Install [Clam](https://github.com/seahorn/crab-llvm#requirements-for-compiling-f
 This is the recipe to install Clam with ldd-boxes and Elina assuming LLVM 10 is installed already in your machine:
 
 ```
-git clone https://github.com/seahorn/crab-llvm clam
+git clone https://github.com/seahorn/clam clam
 cd clam
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=_CLAM_INSTALL_DIR_ -DLLVM_DIR=__PATH_TO_LLVM_CONFIG -DCRAB_USE_LDD=ON -DCRAB_USE_ELINA=ON ../
