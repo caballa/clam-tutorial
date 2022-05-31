@@ -3,15 +3,12 @@
 // CHECK: ^0  Number of total error checks$
 // CHECK: ^0  Number of total warning checks$
 
+#include "clam/clam.h"
 
-/* 
-   Simple example about numerical invariants
-   The assertion can be proven by Polyhedra.
- */
-
-extern int nd_int(void);
-extern void __CRAB_assume(int);
-extern void __CRAB_assert(int);
+/** 
+ *  Simple example about numerical invariants
+ *  The assertion can be proven by Polyhedra.
+ **/
 
 int main (){
 
@@ -19,7 +16,6 @@ int main (){
   x=0;
   y=0;  
   n=nd_int();
-
   __CRAB_assume(n >= 0);
   for (i=0;i<n;i++) {
     x = x+1;

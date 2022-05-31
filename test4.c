@@ -4,13 +4,11 @@
 // CHECK: ^10  Number of total safe checks$
 // CHECK: ^ 0  Number of total warning checks$
 
-/*
-  Example where tracking of memory contents and pointers are required
- */
+#include "clam/clam.h"
 
-extern void __CRAB_assert(int);
-extern void __CRAB_assume(int);
-extern int int_nd(void);
+/**
+ * Example where tracking of memory contents and pointers are required
+ **/
 
 #define CRAB_assert_forall(A, LEN, VAL)		\
   {						\
@@ -56,7 +54,7 @@ List mk_list(int n, SIZE data_sz) {
     int* data = mycalloc(data_sz); 
     tmp->data= data;
     tmp->cap = data_sz;
-    int used = int_nd();
+    int used = nd_int();
     __CRAB_assume(used >= 0);
     __CRAB_assume(used < data_sz);
     tmp->len = used;
@@ -77,10 +75,10 @@ int main() {
   SIZE data_sz = M;
 #else
   // Non-deterministic values
-  int x = int_nd();
+  int x = nd_int();
   __CRAB_assume(x > 0);  
   SIZE list_sz = x;
-  int y = int_nd();
+  int y = nd_int();
   __CRAB_assume(y > 0);
   SIZE data_sz = y;
 #endif

@@ -1,9 +1,7 @@
-extern int int_nd(void);
-extern void __CRAB_assume(int);
-extern void __CRAB_assert(int);
-
 // RUN: %clam -O0 --crab-inter --crab-dom=pk --crab-check=assert  --crab-track=sing-mem  "%s" 2>&1 | OutputCheck %s
 // CHECK: ^2  Number of total safe checks$
+
+#include "clam/clam.h"
 
 /* 
  * Example with arrays (global variables are translated as arrays) The
@@ -31,7 +29,7 @@ int f1(int a) {
 int f2(int a) {
   x++;
   int b=0;
-  if (int_nd()) {
+  if (nd_int()) {
     b = f1(a);
   }
   return a+b+1;

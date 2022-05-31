@@ -10,4 +10,5 @@ GMP_DIR=/opt/homebrew
 MPFR_DIR=/opt/homebrew
 
 include Makefile.config
+#include Makefile.external.config
 

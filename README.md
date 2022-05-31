@@ -30,11 +30,15 @@ make all
 
 ## Build an analyzer from scratch using C++ Clam API ##
 
-This tutorial includes a standalone LLVM static analyzer that uses
-the C++ Clam API. The code of the full analyzer is [here](https://github.com/caballa/clam-tutorial/blob/master/api-example/myanalyzer.cpp). 
-To compile the code, follow these two steps: 
+This tutorial includes a standalone LLVM static analyzer that uses the
+C++ Clam API. The code of the full analyzer
+is
+[here](https://github.com/caballa/clam-tutorial/blob/master/api-example/myanalyzer.cpp).
+To compile the code, follow these two steps:
 
-1. Modify in `api-example/Makefile` the variables `CLAM_INSTALL_DIR` and `LLVM_HOME`.
+1. Modify in `api-example/Makefile` the variables `CLAM_INSTALL`,
+   `LLVM_HOME`, `BOOST_ROOT`, `GMP_DIR`, and `MPFR_DIR`.
+
 2. Type `make`.
 
 ```

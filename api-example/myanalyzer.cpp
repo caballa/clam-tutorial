@@ -54,19 +54,27 @@ int main(int argc, char *argv[]) {
 		*module, cg, TLIW, allocWrapInfo, dsaLibFuncInfo, true));
 
   //////////////////////////////////////  
-  // Clam
+  // Run Clam inter-procedural analysis
   //////////////////////////////////////
   
   /// Translation from LLVM to CrabIR
   CrabBuilderParams cparams;
+  // Translate all memory operations using seadsa
   cparams.setPrecision(clam::CrabBuilderPrecision::MEM);
-  cparams.print_cfg = true;
+  // Deal with unsigned comparisons
+  cparams.lowerUnsignedICmpIntoSigned();
+  // Print the CFG into dot format
+  cparams.dot_cfg = true;
+  
   CrabBuilderManager man(cparams, TLIW, std::move(mem));
   
   /// Set Crab parameters
   AnalysisParams aparams;
-  aparams.dom = CrabDomain::INTERVALS;
+  // Zones domains (constraints of the form x - y <= k)
+  aparams.dom = CrabDomain::ZONES_SPLIT_DBM;
+  // Enable inter-procedural analysis
   aparams.run_inter = true;
+  // Check for assertions
   aparams.check = clam::CheckerKind::ASSERTION;
   
   /// Create an inter-analysis instance 
@@ -74,17 +82,27 @@ int main(int argc, char *argv[]) {
   /// Run the Crab analysis
   ClamGlobalAnalysis::abs_dom_map_t assumptions;
   ga.analyze(aparams, assumptions);
+
+  //////////////////////////////////////  
+  // Post-processing of the Clam results
+  //////////////////////////////////////
   
-  /// Print program invariants inferred by Clam
+  // 1. Ask the Clam analysis for the invariants that hold at the
+  // entry of each basic block.
   llvm::errs() << "===Invariants at the entry of each block===\n";
   for (auto &f: *module) {
     for (auto &b: f) {
       llvm::Optional<clam_abstract_domain> dom = ga.getPre(&b);
       if (dom.hasValue()) {
-	crab::outs() << f.getName() << "#" << b.getName() << ":\n  " << dom.getValue() << "\n";
+	crab::outs() << f.getName() << "#" << b.getName() << ":\n  "
+		     << dom.getValue() << "\n";
+	crab::outs() << f.getName() << "#" << b.getName() << ":\n  "
+		     << dom.getValue().to_linear_constraint_system() << "\n";
       }
     }
   }
+
+  // 2. Ask the Clam analysis API for the ranges of LLVM values
   llvm::errs() << "===Ranges for each Instruction's definition===\n";
   for (auto &f: *module) {
     for (auto &b: f) {
@@ -97,7 +115,7 @@ int main(int argc, char *argv[]) {
     }
   }
   
-  /// Print results about assertion checks
+  /// 3. Print results about assertion checks
   llvm::errs() << "===Assertion checks ===\n";
   ga.getChecksDB().write(crab::outs());
   

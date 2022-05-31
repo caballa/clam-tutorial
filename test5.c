@@ -4,13 +4,11 @@
 // CHECK: ^1  Number of total safe checks$
 // CHECK: ^0  Number of total warning checks$
 
-/* Example where tracking of allocation sites is required */
+#include "clam/clam.h"
 
-extern void __CRAB_assert(int);
-extern void __CRAB_assume(int);
-extern int int_nd(void);
-
-extern int nd();
+/** 
+ * Example where tracking of allocation sites is required 
+ **/
 
 void fun1(int a) {
   printf("Value of a is %d\n", a);
@@ -25,18 +23,15 @@ void fun3(int a) {
 void (*fun_ptr)(int) = fun3;
 
 int main() {
-
-   int x = nd();
+   int x = nd_int();
    __CRAB_assume (x >= 0);
-   if (x > 0)
+   if (x > 0) {
      fun_ptr = fun1;
-   else
+   } else {
      fun_ptr = fun2;
-
+   }
    if (x < 0) fun_ptr = fun3;
-   
    __CRAB_assert(fun_ptr != fun3);
-   
    (*fun_ptr)(x);
    return 0;
 }

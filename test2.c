@@ -3,25 +3,25 @@
 
 // Without --crab seahorn should not terminate.
 
-/*
-  Example that shows the use of Clam in SeaHorn
- */
+#include "clam/clam.h"
 
-extern int nd(void);
-extern void __VERIFIER_error(void) __attribute__((noreturn));
-#define assert(X)                                                              \
-  if (!(X)) {                                                                  \
-    __VERIFIER_error();                                                        \
+/**
+ * Example that shows the use of Clam in SeaHorn
+ **/
+
+#define sassert(X)							\
+  if (!(X)) {								\
+    __VERIFIER_error();							\
   }
 
 int main() {
   int x, y;
   x = 1;
   y = 0;
-  while (nd()) {
+  while (nd_int()) {
     x = x + y;
     y++;
   }
-  assert(x >= y);
+  sassert(x >= y);
   return 0;
 }
