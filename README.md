@@ -16,7 +16,7 @@ cmake -DCMAKE_INSTALL_PREFIX=_CLAM_INSTALL_DIR_ -DLLVM_DIR=__PATH_TO_LLVM_CONFIG
 cmake --build . --target extra                 
 cmake --build . --target crab && cmake ..
 cmake --build . --target ldd && cmake ..
-cmake --build . --target apron && cmake ..
+cmake --build . --target elina && cmake ..
 cmake --build . --target install 
 ```
 
@@ -30,9 +30,10 @@ make all
 
 ## Build an analyzer from scratch using C++ Clam API ##
 
-This tutorial also includes a standalone LLVM static analyzer that uses
+This tutorial includes a standalone LLVM static analyzer that uses
 the C++ Clam API. The code of the full analyzer is in
-`api-example/myanalyzer.cpp`. To compile the code, follow these two steps: 
+https://github.com/caballa/clam-tutorial/blob/master/api-example/myanalyzer.cpp. 
+To compile the code, follow these two steps: 
 
 1. Modify in `api-example/Makefile` the variables `CLAM_INSTALL_DIR` and `LLVM_HOME`.
 2. Type `make`.
