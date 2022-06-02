@@ -6,10 +6,11 @@ Install [Clam](https://github.com/seahorn/crab-llvm#requirements-for-compiling-f
 
 ### Notes about Clam Installation ###
 
+Install all the Clam's [prerequisites](https://github.com/seahorn/clam#requirements-for-compiling-from-sources).
 This is the recipe to install Clam with ldd-boxes and Elina assuming LLVM 10 is installed already in your machine:
 
 ```
-git clone https://github.com/seahorn/clam clam
+git clone https://github.com/seahorn/clam 
 cd clam
 mkdir build && cd build
 cmake -DCMAKE_INSTALL_PREFIX=_CLAM_INSTALL_DIR_ -DLLVM_DIR=__PATH_TO_LLVM_CONFIG -DCRAB_USE_LDD=ON -DCRAB_USE_ELINA=ON ../
@@ -19,14 +20,23 @@ cmake --build . --target ldd && cmake ..
 cmake --build . --target elina && cmake ..
 cmake --build . --target install 
 ```
+### Install `lit` and `OutputCheck` ###
+
+```
+ pip3 install lit
+ pip3 install OutputCheck
+```
 
 ## Run programs ##
 
-Run all programs with `lit`:
+To run all programs from this tutorial just type:
 
 ``` 
 make all
 ```
+
+This command will run Clam on each program and it will check (using `lit` and `OutputCheck`) that the results match the expected ones. 
+
 
 ## Build an analyzer from scratch using C++ Clam API ##
 
