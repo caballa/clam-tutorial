@@ -7,7 +7,7 @@ Install [Clam](https://github.com/seahorn/crab-llvm#requirements-for-compiling-f
 ### Notes about Clam Installation ###
 
 Install all the Clam's [prerequisites](https://github.com/seahorn/clam#requirements-for-compiling-from-sources).
-This is the recipe to install Clam with ldd-boxes and Elina assuming LLVM 10 is installed already in your machine:
+This is the recipe to install Clam with ldd-boxes and Elina assuming LLVM is installed already in your machine:
 
 ```
 git clone https://github.com/seahorn/clam 

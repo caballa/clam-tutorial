@@ -37,21 +37,18 @@ int main(int argc, char *argv[]) {
     return 1;
   }
   
-  const auto& tripleS = module->getTargetTriple();
-  Twine tripleT(tripleS);
-  Triple triple(tripleT);
-  TargetLibraryInfoWrapperPass  TLIW(triple);  
 
   //////////////////////////////////////
   // Run seadsa -- pointer analysis
   //////////////////////////////////////  
   CallGraph cg(*module);
-  seadsa::AllocWrapInfo allocWrapInfo(&TLIW);
+  TargetLibraryInfoWrapperPass tliw;    
+  seadsa::AllocWrapInfo allocWrapInfo(&tliw);
   allocWrapInfo.initialize(*module, nullptr);
   seadsa::DsaLibFuncInfo dsaLibFuncInfo;
   dsaLibFuncInfo.initialize(*module);
   std::unique_ptr<HeapAbstraction> mem(new SeaDsaHeapAbstraction(
-		*module, cg, TLIW, allocWrapInfo, dsaLibFuncInfo, true));
+		*module, cg, tliw, allocWrapInfo, dsaLibFuncInfo, true));
 
   //////////////////////////////////////  
   // Run Clam inter-procedural analysis
@@ -66,7 +63,7 @@ int main(int argc, char *argv[]) {
   // Print the CFG into dot format
   cparams.dot_cfg = true;
   
-  CrabBuilderManager man(cparams, TLIW, std::move(mem));
+  CrabBuilderManager man(cparams, tliw, std::move(mem));
   
   /// Set Crab parameters
   AnalysisParams aparams;
@@ -89,34 +86,34 @@ int main(int argc, char *argv[]) {
   
   // 1. Ask the Clam analysis for the invariants that hold at the
   // entry of each basic block.
-  llvm::errs() << "===Invariants at the entry of each block===\n";
+  llvm::outs() << "===Invariants at the entry of each block===\n";
   for (auto &f: *module) {
     for (auto &b: f) {
       llvm::Optional<clam_abstract_domain> dom = ga.getPre(&b);
       if (dom.hasValue()) {
-	crab::outs() << f.getName() << "#" << b.getName() << ":\n  "
-		     << dom.getValue() << "\n";
-	crab::outs() << f.getName() << "#" << b.getName() << ":\n  "
-		     << dom.getValue().to_linear_constraint_system() << "\n";
+	llvm::outs() << f.getName() << "#" << b.getName() << ":\n";
+	crab::outs() << dom.getValue() << "\n";
+	//llvm::outs() << f.getName() << "#" << b.getName() << ":\n";
+	//crab::outs() << dom.getValue().to_linear_constraint_system() << "\n";
       }
     }
   }
 
   // 2. Ask the Clam analysis API for the ranges of LLVM values
-  llvm::errs() << "===Ranges for each Instruction's definition===\n";
+  llvm::outs() << "===Ranges for each Instruction's definition===\n";
   for (auto &f: *module) {
     for (auto &b: f) {
       for (auto &i: b) {
 	if (!i.getType()->isVoidTy()) {
 	  auto rangeVal = ga.range(i);
-	  llvm::errs() << "Range for " << i << " = " << rangeVal << "\n";
+	  llvm::outs() << "Range for " << i << " = " << rangeVal << "\n";
 	}
       }
     }
   }
   
   /// 3. Print results about assertion checks
-  llvm::errs() << "===Assertion checks ===\n";
+  llvm::outs() << "===Assertion checks ===\n";
   ga.getChecksDB().write(crab::outs());
   
   return 0;

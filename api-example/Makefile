@@ -1,7 +1,7 @@
 # Installation directory for clam
-CLAM_INSTALL=${HOME}/Repos/clam-dev10/install-release
+CLAM_INSTALL=${HOME}/Repos/clam14/install-release
 # Installation directory for llvm
-LLVM_HOME=${HOME}/src/llvm-10.0.1.src/install-release
+LLVM_HOME=${HOME}/src/llvm-14.0.0.src/install-release
 # Installation directory for Boost
 BOOST_ROOT=/opt/homebrew
 # Installation directory for GMP 
@@ -15,10 +15,10 @@ ELINA_OR_APRON ?= APRON
 
 ## Include this file if Clam was built without external libraries
 ## (ldd, apron, elina)
-#include Makefile.config
+include Makefile.config
 
 ## Include this file if Clam was built with external libraries (ldd,
 ## apron, elina).
-include Makefile.external.config
+#include Makefile.external.config
 
 
