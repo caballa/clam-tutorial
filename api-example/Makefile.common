@@ -1,0 +1,40 @@
+# Common compiler/linker flags and build rules for the example analyzer.
+# Included from Makefile *after* the base and configuration-specific
+# variables (CLAM_INCLUDE, CLAM_LIBS, SYS_LIBS, MPFR_LDFLAGS) are set.
+
+LLVM_CFG = $(LLVM_HOME)/bin/$(LLVM_CONFIG)
+
+CXXFLAGS := \
+	$(shell $(LLVM_CFG) --cxxflags) \
+	-fPIC -std=c++14 \
+	-fvisibility-inlines-hidden -Werror=date-time -Wno-unused-local-typedef \
+	-Wno-redeclared-class-member -Wno-sometimes-uninitialized \
+	-Wno-deprecated-declarations -Wno-covered-switch-default \
+	-Wno-inconsistent-missing-override \
+	-D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS \
+	-g -O2 -DNDEBUG \
+	$(CLAM_INCLUDE) \
+	$(LLVM_INCLUDE)
+
+LLVM_LIBS := $(shell $(LLVM_CFG) --libs)
+
+LDFLAGS = $(CLAM_LIBS) $(LLVM_LIBS)
+LDFLAGS += -L$(GMP_DIR)/lib -lgmp
+LDFLAGS += $(MPFR_LDFLAGS)
+LDFLAGS += $(shell $(LLVM_CFG) --ldflags)
+LDFLAGS += $(SYS_LIBS)
+
+TOOL = myanalyzer
+
+.PHONY: all clean
+
+all: $(TOOL)
+
+$(TOOL): $(TOOL).o
+	$(CXX) $(TOOL).o $(LDFLAGS) -o $(TOOL)
+
+%.o: %.cpp
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(TOOL).o $(TOOL)
